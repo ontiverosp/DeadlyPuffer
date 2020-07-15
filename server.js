@@ -6,71 +6,83 @@ var path = require("path");
 // Sets up the Express App
 // =============================================================
 var app = express();
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Star Wars Characters (DATA)
+// Waiting List (DATA)
 // =============================================================
-var waitingList = [
+var waitlist = [
     {
-      routeName: "customer",
       name: "",
       party_size: 0,
       number: 0,
       email: ""
     }
   ];
+
+// Table List
+  var tables = [
+    {
+      name: "",
+      party_size: 0,
+      number: 0,
+      email: ""
+    }
+  ];
+
 // Routes
 // =============================================================
 
 // Basic route that sends the user first to the AJAX Page
 app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "view.html"));
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.get("/add", function(req, res) {
-  res.sendFile(path.join(__dirname, "add.html"));
+app.get("/reserve", function(req, res) {
+  res.sendFile(path.join(__dirname, "reserve.html"));
 });
 
-// Displays all characters
-app.get("/api/waitingList", function(req, res) {
-  return res.json(waitingList);
+app.get("/tables", function(req, res) {
+  res.sendFile(path.join(__dirname, "tables.html"));
 });
 
-// Displays a single character, or returns false
-app.get("/api/waitingList/:character", function(req, res) {
-  var chosen = req.params.character;
+// Displays all tables
+app.get("/api/waitlist", function(req, res) {
+  return res.json(waitlist);
+});
 
-  console.log(chosen);
-
-  for (var i = 0; i < waitingList.length; i++) {
-    if (chosen === waitingList[i].routeName) {
-      return res.json(waitingList[i]);
-    }
-  }
-
-  return res.json(false);
+// Displays all customers on waiting list
+app.get("/api/tables", function(req, res) {
+  return res.json(tables);
 });
 
 // Create New Characters - takes in JSON input
-app.post("/api/waitingList", function(req, res) {
+app.post("/api/waitlist", function(req, res) {
   // req.body hosts is equal to the JSON post sent from the user
   // This works because of our body parsing middleware
-  var newCharacter = req.body;
+  var newReservation = req.body;
 
-  // Using a RegEx Pattern to remove spaces from newCharacter
-  // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-  newCharacter.routeName = newCharacter.name.replace(/\s+/g, "").toLowerCase();
+  console.log(newReservation);
 
-  console.log(newCharacter);
+  waitlist.push(newReservation);
 
-  waitingList.push(newCharacter);
-
-  res.json(newCharacter);
+  res.json(newReservation);
 });
+
+app.post("/api/tables", function(req, res) {
+
+  var newTable = req.body;
+
+  console.log(newTable);
+
+  tables.push(newTable);
+
+  res.json(newTable);
+});
+
 
 // Starts the server to begin listening
 // =============================================================
