@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery.js"></script>
     <title>Tables Page</title>
 </head>
 
@@ -22,17 +23,17 @@
             <br>
             <!-- tables button -->
             <div class="text-center">
-                <a href="/reserve"><button type="button" class="btn btn-primary btn-lg">
+                <a href="/tables"><button type="button" class="btn btn-primary btn-lg">
                         <span class="btn-2-icon">
                         </span>
-                        " View Tables "
+                        View Tables
                     </button>
                 </a>
                 <!-- reservations btn -->
-                <a href="/index"><button type="button" class="btn btn-primary btn-lg">
+                <a href="/"><button type="button" class="btn btn-primary btn-lg">
                         <span class="btn-3-icon">
                         </span>
-                        "Home"
+                        Home
                     </button>
                 </a>
             </div>
@@ -89,6 +90,12 @@
 
     </div>
 </div>
+<footer class="footer">
+    <div class="container">
+        <p>Control Panel</p>
+        <p><a href="#" id="clear">Clear Table</a> | <a href="/api/tables">API Table Link</a> | <a href="/api/waitlist">API Wait List</a></p>
+    </div>
+</footer>
 <script>
 
 
@@ -100,15 +107,16 @@
 
 // Here we get the location of the root page.
 // We use this instead of explicitly saying the URL is localhost:3001 because the url will change when we deploy.
-var currentURL = window.location.origin;
+// var currentURL = window.location.origin;
+// console.log(currentURL);
 
 // The AJAX function uses the URL of our API to GET the data associated with it (initially set to localhost)
-$.ajax({url: currentURL + "/api/tables", method: "GET"})
+$.ajax({url: "api/tables", method: "GET"})
     .done(function(tableData) {
 
         // Here we are logging the URL so we have access to it for troubleshooting
         console.log("------------------------------------");
-        console.log("URL: " + currentURL + "/api/tables");
+        console.log("URL: " + "/api/tables");
         console.log("------------------------------------");
 
         // Here we then log the NYTData to console, where it will show up as an object.
@@ -137,20 +145,20 @@ function runWaitListQuery(){
 
 // Here we get the location of the root page.
 // We use this instead of explicitly saying the URL is localhost:3001 because the url will change when we deploy.
-var currentURL = window.location.origin;
+// var currentURL = window.location.origin;
 
 // The AJAX function uses the URL of our API to GET the data associated with it (initially set to localhost)
-$.ajax({url: currentURL + "/api/waitlist", method: "GET"})
+$.ajax({url: "/api/waitlist", method: "GET"})
     .done(function(waitlistData) {
 
         // Here we are logging the URL so we have access to it for troubleshooting
         console.log("------------------------------------");
-        console.log("URL: " + currentURL + "/api/waitlist");
+        console.log("URL: " + "/api/waitlist");
         console.log("------------------------------------");
 
         // Here we then log the NYTData to console, where it will show up as an object.
         console.log(waitlistData);
-        console.log("------------------------------------")
+        console.log("------------------------------------");
 
         // Loop through and display each of the customers
         for (var i=0; i<waitlistData.length; i++){
@@ -172,8 +180,8 @@ $.ajax({url: currentURL + "/api/waitlist", method: "GET"})
 // This function resets all of the data in our tables. This is intended to let you restart a demo.
 function clearTable(){
 
-var currentURL = window.location.origin;
-$.ajax({url: currentURL + "/api/clear", method: "POST"})
+// var currentURL = window.location.origin;
+$.ajax({url: "/api/clear", method: "POST"})
 
 }
 
