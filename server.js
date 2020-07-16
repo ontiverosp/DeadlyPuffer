@@ -14,24 +14,10 @@ app.use(express.json());
 
 // Waiting List (DATA)
 // =============================================================
-var waitlist = [
-    {
-      name: "",
-      party_size: 0,
-      number: 0,
-      email: ""
-    }
-  ];
+var waitlist = [];
 
 // Table List
-  var tables = [
-    {
-      name: "",
-      party_size: 0,
-      number: 0,
-      email: ""
-    }
-  ];
+var tables = [];
 
 // Routes
 // =============================================================
@@ -59,26 +45,16 @@ app.get("/api/tables", function(req, res) {
   return res.json(tables);
 });
 
-// Create New Characters - takes in JSON input
-app.post("/api/waitlist", function(req, res) {
-  // req.body hosts is equal to the JSON post sent from the user
-  // This works because of our body parsing middleware
-  var newReservation = req.body;
-
-  console.log(newReservation);
-
-  waitlist.push(newReservation);
-
-  res.json(newReservation);
-});
+// Create New Reservation - takes in JSON input
 
 app.post("/api/tables", function(req, res) {
-
-  var newTable = req.body;
-
+  let newTable = req.body;
+  if (tables.length >= 5) {
+    waitlist.push(newTable);
+  } else {
+    tables.push(newTable);
+  }
   console.log(newTable);
-
-  tables.push(newTable);
 
   res.json(newTable);
 });
